@@ -1,0 +1,2 @@
+rasa-sdk==3.0.4
+packaging==21.3
