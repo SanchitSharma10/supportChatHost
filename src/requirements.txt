@@ -3,3 +3,5 @@ flask
 requests
 spacy
 transformers
+wheel>=0.26
+typing-extensions>=3.7.4,<4.0.0
