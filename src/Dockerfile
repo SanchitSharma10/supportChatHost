@@ -19,6 +19,10 @@ RUN conda update -n base -c defaults conda && \
 # upgrade pip version
 RUN pip install --no-cache-dir --upgrade pip
 
+# Install the specified packages from GitHub
+RUN pip install git+https://github.com/vpol/text.git --no-deps && \
+    pip install git+https://github.com/RasaHQ/rasa-sdk@3.0.2 --no-deps && \
+    pip install git+https://github.com/RasaHQ/rasa.git@3.0.4 --no-deps
 
 # Expose the Rasa port
 EXPOSE 5005
