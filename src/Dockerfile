@@ -19,3 +19,5 @@ USER 1001
 
 # Expose the Rasa port
 EXPOSE 5005
+
+CMD ["rasa", "run", "--enable-api", "-p", "5005", "--cors", "*"]
