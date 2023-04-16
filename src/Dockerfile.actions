@@ -1,0 +1,32 @@
+# Use the official Rasa SDK image as the base image
+FROM rasa/rasa-sdk:3.0.4
+
+USER root
+# Use a separate environment for the custom action server
+WORKDIR /app
+
+# Copy the requirements file into the container
+COPY requirements-actions.txt requirements.txt
+
+# Install any additional requirements, if necessary
+RUN pip install -r requirements.txt
+
+# Copy your custom actions code and other necessary files into the container
+COPY requirements-actions.txt .
+COPY actions/actions.py /app/actions.py
+COPY credentials.yml /app/credentials.yml
+COPY endpoints.yml /app/endpoints.yml
+
+# Expose the port the action server will run on 
+EXPOSE 5002
+
+# Start the action server with the custom command
+CMD ["rasa", "run", "--port", "5002", "--connector", "slack", "--credentials", "credentials.yml", "--endpoints", "endpoints.yml", "--cors", "*", "--enable-api", "--debug"]
+
+
+
+
+
+
+
+
