@@ -1,28 +1,21 @@
-# Use the official Miniconda3 image as the base
-FROM continuumio/miniconda3
+FROM rasa/rasa:3.0.4
 
-# Set the working directory
-WORKDIR /app
+USER root
 
 # Copy your Rasa project files
 COPY . /app
 
-# Copy the environment.yml file into the container
-COPY environment.yml .
-
-# Update conda and install the dependencies from the environment.yml file
-RUN conda update -n base -c defaults conda && \
-    conda env update -f environment.yml && \
-    conda clean -afy
+# Set the working directory
+WORKDIR /app
 
 # Install any additional dependencies specified in your requirements.txt
 # upgrade pip version
-RUN pip install --no-cache-dir --upgrade pip
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt
 
-# Install the specified packages from GitHub
-RUN pip install git+https://github.com/vpol/text.git --no-deps && \
-    pip install git+https://github.com/RasaHQ/rasa-sdk@3.0.2 --no-deps && \
-    pip install git+https://github.com/RasaHQ/rasa.git@3.0.4 --no-deps
+COPY ./actions /app/actions
+
+USER 1001
 
 # Expose the Rasa port
 EXPOSE 5005
