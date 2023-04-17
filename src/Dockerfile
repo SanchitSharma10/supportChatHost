@@ -2,10 +2,6 @@ FROM rasa/rasa:3.0.4
 WORKDIR '/app'
 COPY . /app
 USER root
-# WORKDIR /app
-# COPY . /app
 COPY ./data /app/data
-VOLUME /app
-VOLUME /app/data
-VOLUME /app/models
+COPY ./models /app/models
 CMD ["run","-m","/app/models","--enable-api","--cors","*","--debug" ,"--endpoints", "endpoints.yml", "--log-file", "out.log", "--debug"]
