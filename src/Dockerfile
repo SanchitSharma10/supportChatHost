@@ -1,23 +1,12 @@
 FROM rasa/rasa:3.0.4
-
-USER root
-
-# Copy your Rasa project files
+WORKDIR '/app'
 COPY . /app
-
-# Set the working directory
-WORKDIR /app
-
-# Install any additional dependencies specified in your requirements.txt
-# upgrade pip version
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
-
-COPY ./actions /app/actions
-
-USER 1001
-
-# Expose the Rasa port
-EXPOSE 5005
-
-CMD ["rasa", "run", "--enable-api", "-p", "5005", "--cors", "*"]
+USER root
+# WORKDIR /app
+# COPY . /app
+COPY ./data /app/data
+RUN  rasa train
+VOLUME /app
+VOLUME /app/data
+VOLUME /app/models
+CMD ["run","-m","/app/models","--enable-api","--cors","*","--debug" ,"--endpoints", "endpoints.yml", "--log-file", "out.log", "--debug"]
